@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAP Implementation Training for Enterprise Excellence</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #0F4C75 0%, #3282B8 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #0F4C75;
+            text-decoration: none;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .auth-btn {
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid #0F4C75;
+            color: #0F4C75;
+        }
+
+        .auth-btn.primary {
+            background: #0F4C75;
+            color: white;
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(15, 76, 117, 0.3);
+        }
+
+        .user-welcome {
+            display: none;
+            color: #0F4C75;
+            font-weight: 600;
+            padding: 10px 20px;
+            background: rgba(15, 76, 117, 0.1);
+            border-radius: 25px;
+        }
+
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.95;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .cta-btn:first-child {
+            background: white;
+            color: #0F4C75;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .cta-btn.secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .modules-section {
+            background: white;
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 60px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .enhanced-lessons {
+            background: linear-gradient(135deg, #E8F4FD 0%, #D1E7DD 100%);
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 60px;
+            border-left: 5px solid #0F4C75;
+        }
+
+        .enhanced-title {
+            font-size: 1.8rem;
+            color: #0F4C75;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .enhanced-title::before {
+            content: "⚡";
+            font-size: 2rem;
+        }
+
+        .enhanced-description {
+            color: #2C5F7A;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .enhanced-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .enhanced-link {
+            background: #0F4C75;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .enhanced-link::before {
+            content: attr(data-number);
+            position: absolute;
+            top: -5px;
+            right: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .enhanced-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(15, 76, 117, 0.4);
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .module-icon {
+            font-size: 3rem;
+            padding: 15px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #0F4C75 0%, #3282B8 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .module-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .module-description {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .lessons-list {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .lessons-list li {
+            padding: 8px 0;
+            color: #555;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .lessons-list li::before {
+            content: "📚";
+            position: absolute;
+            left: 0;
+        }
+
+        .module-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .module-btn {
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .module-btn:first-child {
+            background: linear-gradient(135deg, #0F4C75 0%, #3282B8 100%);
+            color: white;
+        }
+
+        .module-btn.quiz {
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            color: white;
+        }
+
+        .module-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .features-section {
+            background: #f8f9fa;
+            padding: 80px 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 40px 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .feature-description {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer p {
+            margin-bottom: 10px;
+        }
+
+        .admin-link {
+            color: #0F4C75;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 20px;
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(15, 76, 117, 0.1);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .admin-link:hover {
+            background: rgba(15, 76, 117, 0.2);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .enhanced-links {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">SAP Implementation Training</div>
+            <div class="auth-buttons" id="auth-buttons">
+                <a href="#" class="auth-btn" onclick="showLogin()">Login to Continue</a>
+                <a href="#" class="auth-btn primary" onclick="startTraining()">Start Free Training</a>
+            </div>
+            <div class="user-welcome" id="user-welcome">
+                Welcome back! Continue your training journey.
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1 class="hero-title">Master SAP Implementation for Enterprise Success</h1>
+            <p class="hero-subtitle">Transform your organization with comprehensive SAP implementation training. Learn best practices, avoid common pitfalls, and drive successful enterprise transformations with the world's leading ERP platform.</p>
+            <div class="hero-cta">
+                <a href="#modules" class="cta-btn">Start Learning Now</a>
+                <a href="#features" class="cta-btn secondary">Explore Features</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="modules-section" id="modules">
+        <div class="container">
+            <h2 class="section-title">Implementation Training Modules</h2>
+            <p class="section-subtitle">Comprehensive SAP implementation training designed for project managers, consultants, and enterprise teams</p>
+            
+            <div class="enhanced-lessons">
+                <div class="enhanced-title">Enhanced Interactive Lessons</div>
+                <div class="enhanced-description">Experience our new interactive lessons with section-based quizzes, progress tracking, and completion certificates!</div>
+                <div class="enhanced-links">
+                    <a href="lessons/lesson-welcome.html" class="enhanced-link" data-number="1">Welcome to SAP</a>
+                    <a href="lessons/lesson-system-overview.html" class="enhanced-link" data-number="2">System Architecture</a>
+                    <a href="lessons/lesson-lead-capture.html" class="enhanced-link" data-number="3">Project Planning</a>
+                </div>
+            </div>
+
+            <div class="modules-grid">
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">🚀</div>
+                        <div class="module-title">Module 1: SAP Fundamentals</div>
+                    </div>
+                    <div class="module-description">
+                        Discover the power of SAP ERP and understand the foundation for successful enterprise implementations.
+                    </div>
+                    <ul class="lessons-list">
+                        <li>Lesson 1: Welcome to SAP</li>
+                        <li>Lesson 2: ERP Overview</li>
+                        <li>Lesson 3: Implementation Basics</li>
+                    </ul>
+                    <div class="module-actions">
+                        <a href="lessons/lesson-welcome.html" class="module-btn">Start Module</a>
+                        <a href="#" class="module-btn quiz">Take Quiz</a>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">🏗️</div>
+                        <div class="module-title">Module 2: System Architecture & Planning</div>
+                    </div>
+                    <div class="module-description">
+                        Learn to design robust SAP architectures and create comprehensive implementation roadmaps.
+                    </div>
+                    <ul class="lessons-list">
+                        <li>Lesson 1: System Architecture</li>
+                        <li>Lesson 2: Infrastructure Planning</li>
+                        <li>Lesson 3: Technical Requirements</li>
+                    </ul>
+                    <div class="module-actions">
+                        <a href="lessons/lesson-system-overview.html" class="module-btn">Start Module</a>
+                        <a href="#" class="module-btn quiz">Take Quiz</a>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">📋</div>
+                        <div class="module-title">Module 3: Project Management Excellence</div>
+                    </div>
+                    <div class="module-description">
+                        Master project management methodologies specific to SAP implementations and ensure delivery success.
+                    </div>
+                    <ul class="lessons-list">
+                        <li>Lesson 1: Project Planning</li>
+                        <li>Lesson 2: Risk Management</li>
+                        <li>Lesson 3: Stakeholder Engagement</li>
+                    </ul>
+                    <div class="module-actions">
+                        <a href="lessons/lesson-lead-capture.html" class="module-btn">Start Module</a>
+                        <a href="#" class="module-btn quiz">Take Quiz</a>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">⚙️</div>
+                        <div class="module-title">Module 4: Configuration & Customization</div>
+                    </div>
+                    <div class="module-description">
+                        Learn to configure SAP modules and implement customizations that align with business requirements.
+                    </div>
+                    <ul class="lessons-list">
+                        <li>Lesson 1: Core Configuration</li>
+                        <li>Lesson 2: Business Process Design</li>
+                        <li>Lesson 3: Custom Development</li>
+                        <li>Lesson 4: Integration Points</li>
+                    </ul>
+                    <div class="module-actions">
+                        <a href="#" class="module-btn">Start Module</a>
+                        <a href="#" class="module-btn quiz">Take Quiz</a>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">🔄</div>
+                        <div class="module-title">Module 5: Data Migration & Testing</div>
+                    </div>
+                    <div class="module-description">
+                        Master data migration strategies and comprehensive testing methodologies for SAP implementations.
+                    </div>
+                    <ul class="lessons-list">
+                        <li>Lesson 1: Data Migration Strategy</li>
+                        <li>Lesson 2: ETL Processes</li>
+                        <li>Lesson 3: Testing Frameworks</li>
+                        <li>Lesson 4: Quality Assurance</li>
+                    </ul>
+                    <div class="module-actions">
+                        <a href="#" class="module-btn">Start Module</a>
+                        <a href="#" class="module-btn quiz">Take Quiz</a>
+                    </div>
+                </div>
+
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">🎯</div>
+                        <div class="module-title">Module 6: Go-Live & Support</div>
+                    </div>
+                    <div class="module-description">
+                        Execute successful go-live strategies and establish ongoing support frameworks for long-term success.
+                    </div>
+                    <ul class="lessons-list">
+                        <li>Capstone: Complete Implementation</li>
+                        <li>Go-Live Execution</li>
+                        <li>Post-Implementation Support</li>
+                        <li>Continuous Improvement</li>
+                    </ul>
+                    <div class="module-actions">
+                        <a href="#" class="module-btn">Start Module</a>
+                        <a href="#" class="module-btn quiz">Take Quiz</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section" id="features">
+        <div class="container">
+            <h2 class="section-title">Why Choose Our Training?</h2>
+            <p class="section-subtitle">Comprehensive SAP implementation training designed for real-world enterprise success</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🧩</span>
+                    <h3 class="feature-title">Interactive Assessments</h3>
+                    <p class="feature-description">Test your knowledge with comprehensive assessments and immediate feedback</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🏆</span>
+                    <h3 class="feature-title">Professional Certificates</h3>
+                    <p class="feature-description">Earn industry-recognized certificates to showcase your SAP implementation expertise</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">📊</span>
+                    <h3 class="feature-title">Progress Analytics</h3>
+                    <p class="feature-description">Monitor your learning progress with detailed analytics and milestone tracking</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">📱</span>
+                    <h3 class="feature-title">Mobile Learning</h3>
+                    <p class="feature-description">Learn anywhere, anytime with our responsive mobile-optimized platform</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🎯</span>
+                    <h3 class="feature-title">Implementation Focused</h3>
+                    <p class="feature-description">Specifically designed for SAP implementation professionals and project teams</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">⚡</span>
+                    <h3 class="feature-title">Self-Paced Learning</h3>
+                    <p class="feature-description">Learn at your own speed with 24/7 access to all training materials</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 SAP Implementation Training for Enterprise Excellence. All rights reserved.</p>
+            <p>Transform your organization with comprehensive SAP implementation expertise.</p>
+            <a href="admin-dashboard/admin.html" class="admin-link" id="admin-link" style="display: none;">Admin Dashboard</a>
+        </div>
+    </footer>
+
+    <script src="data/userManager.js"></script>
+    <script>
+        // Check authentication status on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = userManager.getCurrentUser();
+            const authButtons = document.getElementById('auth-buttons');
+            const userWelcome = document.getElementById('user-welcome');
+            const adminLink = document.getElementById('admin-link');
+            
+            if (currentUser) {
+                // User is logged in
+                authButtons.style.display = 'none';
+                userWelcome.style.display = 'block';
+                userWelcome.textContent = `Welcome back, ${currentUser.firstName}! Continue your training journey.`;
+                
+                // Show admin link if user is admin
+                if (currentUser.email === 'admin@saptraining.com' || userManager.isAdmin(currentUser.email)) {
+                    adminLink.style.display = 'inline-block';
+                    adminLink.href = 'admin-dashboard/admin.html';
+                }
+            } else {
+                // User is not logged in
+                authButtons.style.display = 'flex';
+                userWelcome.style.display = 'none';
+                adminLink.style.display = 'none';
+            }
+        });
+
+        function showLogin() {
+            window.location.href = 'auth-components/login.html';
+        }
+
+        function startTraining() {
+            const currentUser = userManager.getCurrentUser();
+            if (currentUser) {
+                // User is logged in, scroll to modules
+                document.getElementById('modules').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                // User is not logged in, redirect to signup
+                window.location.href = 'auth-components/signup.html';
+            }
+        }
+    </script>
+</body>
+</html>
+
